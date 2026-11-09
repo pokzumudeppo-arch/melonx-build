@@ -1,0 +1,20 @@
+name: 1. Probe official source
+on: workflow_dispatch
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Clone official MeloNX
+        run: |
+          GIT_LFS_SKIP_SMUDGE=1 git clone https://git.ryujinx.app/melonx/emu.git src
+          cd src
+          echo "== commits"; git log -5 --format='%h %cd %s'
+          echo "== branches"; git branch -a
+          echo "== tags"; git tag --sort=-creatordate | head -10
+          echo "== version"; grep -n "VERSION" src/MeloNX/MeloNX.xcconfig || true
+          echo "== workflows"; ls .github/workflows .gitea/workflows 2>/dev/null || true
+          echo "== lfs files"; git lfs ls-files | head -40
+          echo "== cache code"; sed -n 40,100p src/Ryujinx.Graphics.Gpu/Image/AutoDeleteCache.cs
+      - name: Dry-run patch
+        run: python3 scripts/apply_patch.py src && cd src && git diff --stat
