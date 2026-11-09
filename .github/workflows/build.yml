@@ -39,7 +39,7 @@ jobs:
         run: |
           set -euo pipefail
           git lfs install
-          GIT_LFS_SKIP_SMUDGE=1 git clone https://git.ryujinx.app/melonx/emu.git melonx
+          GIT_LFS_SKIP_SMUDGE=1 git clone https://git.ryujinx.app/projects/MeloNX.git melonx
           cd melonx
           if [ -n "${{ inputs.ref }}" ]; then git checkout "${{ inputs.ref }}"; fi
           git log -1 --format='Building %h (%cd) %s'

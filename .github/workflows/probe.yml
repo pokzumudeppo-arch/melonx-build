@@ -7,7 +7,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Clone official MeloNX
         run: |
-          GIT_LFS_SKIP_SMUDGE=1 git clone https://git.ryujinx.app/melonx/emu.git src
+          git ls-remote https://git.ryujinx.app/projects/MeloNX.git | head -20
+          GIT_LFS_SKIP_SMUDGE=1 git clone https://git.ryujinx.app/projects/MeloNX.git src
           cd src
           echo "== commits"; git log -5 --format='%h %cd %s'
           echo "== branches"; git branch -a
